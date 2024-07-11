@@ -1,0 +1,24 @@
+<div class="d-flex justify-content-center"> <!-- Center align content -->
+  <%= form_with model: @e_join, url: e_joins_path, local: true do |form| %>
+    <% if @e_join.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <h2><%= pluralize(@e_join.errors.count, "error") %> prohibited this event join from being saved:</h2>
+
+        <ul>
+          <% @e_join.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form.hidden_field :user_id, value: @e_join.user_id %>
+    <%= form.hidden_field :event_id, value: @e_join.event_id %>
+
+    <div class="actions">
+      <%= form.submit 'Xác Nhận Đăng ký Tham Dự Sự kiện', class: 'btn btn-primary btn-lg' %>
+    </div>
+  <% end %>
+</div>
+
+<%# <%= link_to 'Back', root_path, class: 'btn btn-secondary mt-3 d-block mx-auto' %>

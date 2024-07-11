@@ -1,0 +1,102 @@
+<div class="detail-event m-5">
+  <div class="header">
+    <div class="content row ">
+      <div class="image col-md-5 text-center">
+        <% if @event.image.present? %>
+          <div class="card card-hover">
+            <%= image_tag @event.image.url, style: "object-fit: contain", class: "mx-auto d-block"%>
+          </div>
+        <% else %>
+          <div class="card card-hover">
+            <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", style: "object-fit: contain", class: "mx-auto d-block") %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="title col-md-7">
+        <div class="list-box-status">
+          <div class="box-status" style="text-align: left">
+            <% case @event.status %>
+            <% when 0 %>
+              <label class="badge bg-warning">Sắp diễn ra</label>
+            <% when 1 %>
+              <label class="badge bg-success">Đang diễn ra</label>
+            <% when 2 %>
+              <label class="badge bg-secondary">Đã kết thúc</label>
+            <% end %>
+          </div>
+        </div>
+        <h1>
+          <%= @event.title %>
+        </h1>
+        <div class="row">
+          <div class="col-md-4">
+            <label>Ngày diễn ra</label>
+            <h6><i class="ti ti-calendar"></i> <%= @event.timestart.strftime("%d/%m/%Y %H:%M") %> </h6>
+          </div>
+          <div class="col-md-8">
+            <label>Phòng họp</label>
+            <h6><i class="ti ti-map-pin"></i> <%= @event.room.name %> </h6>
+          </div>
+        </div>
+
+        <div class="row">
+            <div class="list-box-status col-md-4">
+                <label>Đánh giá: </label>
+                <ul class="list-unstyled d-flex align-items-center mb-0">
+                    <% @event.rate.times do %>
+                    <li><i class="fas fa-star text-warning"></i></li>
+                    <% end %>
+                    <% (5 - @event.rate).times do %>
+                    <li><i class="far fa-star text-secondary"></i></li>
+                    <% end %>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <label>Chi tiết</label>
+                <h6><i class="ti ti-map-pin"></i> <%= @event.detail %> </h6>
+            </div>
+        </div>
+        
+
+        <div class="list-box-status mt-2">
+          <% if @event.status == 0 %>
+            <% unless EJoin.exists?(user_id: current_user.id, event_id: @event.id) %>
+              <%= link_to 'Đăng ký tham gia', new_e_join_path(event_id: @event.id), class: "btn btn-outline-dark me-2" %>
+            <% else %>
+              <%= link_to 'Đăng ký tham gia', '#', class: "btn btn-outline-dark me-2 disabled", aria: { disabled: true } %>
+            <% end %>
+          <% else %>
+            <%= link_to 'Đăng ký tham gia', '#', class: "btn btn-outline-dark me-2 disabled", aria: { disabled: true } %>
+          <% end %>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="shadow"></div>
+  </div>
+  <div class="body row border p-3">
+    <div class="col-md-12">
+      <div class="detail row ms-5">
+        <div class="col-md-4">
+          <h4>Chủ trì: <%= @event.user.name %> </h4>
+        </div>
+        <div class="col-md-4">
+          <h4> Số ghế: <%= @event.slot %> </h4>
+        </div>
+        <div class="col-md-4">
+          <%# <h4> Còn trống: <%= @event.slot - @event.amount_join %> </h4> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<p id="notice"><%= notice %></p>
+
+<% if can?(:update, @event) %>
+  <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-outline-dark me-2" %>
+<% end %>
+<%# <%= link_to 'Back', events_path %>

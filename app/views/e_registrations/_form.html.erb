@@ -1,0 +1,62 @@
+<!-- app/views/e_registrations/_form.html.erb -->
+<%= form_with(model: e_registration, local: true, multipart: true) do |form| %>
+  <% if e_registration.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(e_registration.errors.count, "error") %> prohibited this e_registration from being saved:</h2>
+
+      <ul>
+        <% e_registration.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :detail %>
+    <%= form.text_area :detail, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :timestart %>
+    <%= form.datetime_local_field :timestart, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :timeend %>
+    <%= form.datetime_local_field :timeend, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :slot %>
+    <%= form.number_field :slot, class: 'form-control' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :room_id, 'Room' %>
+    <%= form.collection_select :room_id, Room.all, :id, :name, { prompt: "Select a room" }, { class: 'form-control' } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :image, 'Hình ảnh' %>
+    <% if e_registration.image.present? %>
+      <div class="field">
+        <%= image_tag e_registration.image.url, class: 'img-fluid' %>
+      </div>
+    <% end %>
+  </div>
+
+  
+
+  <div class="actions">
+    <% unless [1, 2].include?(e_registration.status) %>
+      <%= form.submit 'Create Event & Registration', class: 'btn btn-primary' %>
+      <%= link_to 'Reject', reject_e_registration_path(e_registration), method: :put, class: 'btn btn-danger', data: { confirm: 'Are you sure you want to reject this registration?' } %>
+    <% end %>
+  </div>
+<% end %>

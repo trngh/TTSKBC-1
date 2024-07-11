@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<h1>E Joins</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @e_joins.each do |e_join| %>
+      <tr>
+        <td><%= link_to 'Show', e_join %></td>
+        <td><%= link_to 'Edit', edit_e_join_path(e_join) %></td>
+        <td><%= link_to 'Destroy', e_join, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New E Join', new_e_join_path %>

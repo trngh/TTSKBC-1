@@ -1,0 +1,95 @@
+<div class="container-fluid mb-3">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-10 col-md-8 col-lg-6">
+      <h4 class="mb-4 pb-2 pb-md-0 mb-md-0 mt-5">Tìm kiếm sự kiện</h4>
+      <form class="d-flex align-items-center mt-3">
+        <div class="dropdown mr-3">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Chủ đề
+          </button>
+          <ul class="dropdown-menu">
+            <% @subjects.each do |subject| %>
+              <% link_path = select_by_subject_path(subject.id) %>
+              <%= link_to link_path, class: "dropdown-item" do %>
+                <%= subject.title %>
+              <% end %>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="input-group">
+          <%= text_field_tag :find_event, params[:find_event], class: 'form-control ms-2', placeholder: 'Tìm kiếm sự kiện' %>
+          <%= submit_tag 'Tìm kiếm', class: 'btn btn-success ms-2', name: 'button' %>
+        </div>
+        
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <% @events.each_slice(3) do |events_in_row| %>
+      <div class="row mb-4">
+        <% events_in_row.each do |event| %>
+          <div class="col-md-4 mb-4">
+            <div class="card card-hover">
+              <%= link_to event_path(event) do %>
+                <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", class: "card-img-top card-img-top-center") %>
+              <% end %>
+              <div class="card-body" onclick="window.location='<%= event_path(event) %>'">
+                <div class="d-flex align-items-center mb-2">
+                  <div><h4><%= event.datetime_start.day %> tháng <%= event.datetime_start.month %> năm <%= event.datetime_start.year %> </h4></div>
+                  <div class="flex-1"></div>
+
+                  <div class="box-status" style="text-align: right">
+                    <% case event.status %>
+                    <% when 0 %>
+                      <label class="badge bg-warning">Sắp diễn ra</label>
+                    <% when 1 %>
+                      <label class="badge bg-success">Đang diễn ra</label>
+                    <% when 2 %>
+                      <label class="badge bg-secondary">Đã kết thúc</label>
+                    <% end %>
+                  </div>
+                </div>
+
+                <div style="text-align: left">
+                  <h4 class="rows-2" title="<%= event.title %>">
+                    <%= event.title %>
+                  </h4>
+                  
+                </div>
+                <div style="text-align: left">
+                  <h4 class="rows-2" title="<%= event.subject %>">
+                    Chủ đề:
+                    <%= event.subject.title %>
+                  </h4>
+                  
+                </div>
+
+
+                <div class="d-flex flex-row align-items-start justify-content-between flex-wrap">
+                  <div style="text-align: left">
+                    <h7><i class="fas fa-calendar-alt"></i> <%= event.datetime_start.strftime('%d/%m/%Y') %></h7>
+                    <h7 class="time"><%= event.datetime_start.strftime('%H:%M:%S') %></h7> <br>
+                    <h7><i class="fas fa-map-marker-alt"></i> Địa điểm: <%= event.room %></h7>
+                  </div>
+
+                  <ul class="list-unstyled d-flex align-items-center mb-0">
+                    <% event.rate.times do %>
+                      <li><i class="fas fa-star text-warning"></i></li>
+                    <% end %>
+                    <% (5 - event.rate).times do %>
+                      <li><i class="far fa-star text-secondary"></i></li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

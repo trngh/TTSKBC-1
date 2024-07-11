@@ -1,0 +1,17 @@
+<%= form_with(model: e_join, local: true) do |form| %>
+  <% if e_join.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(e_join.errors.count, "error") %> prohibited this e_join from being saved:</h2>
+
+      <ul>
+        <% e_join.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

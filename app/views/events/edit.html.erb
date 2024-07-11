@@ -1,0 +1,26 @@
+<h1>Editing Event</h1>
+
+<%= form_with model: @event, local: true, class: "row g-3" do |form| %>
+  <div class="col-md-6">
+    <%= form.label :title, class: "form-label" %>
+    <%= form.text_field :title, class: "form-control", id: "inputTitle" %>
+  </div>
+  <div class="col-md-6">
+    <%= form.label :detail, class: "form-label" %>
+    <%= form.text_field :detail, class: "form-control", id: "inputDetail" %>
+  </div>
+  <div class="col-12">
+    <%= form.label :slot, class: "form-label" %>
+    <%= form.text_field :slot, class: "form-control", id: "inputSlot"%>
+  </div>
+  <div class="col-md-4">
+    <%= form.label :subject_id, "Subject", class: "form-label" %>
+    <%= form.select :subject_id, options_from_collection_for_select(@subjects, 'id', 'title'), {}, class: "form-select", id: "inputState" %>
+  </div>
+
+  <div class="col-12">
+    <%= form.submit "Update", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', @event %>

@@ -1,0 +1,46 @@
+<header class="p-3 text-bg-light">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s" 
+          class="img-fluid" alt="Full-width image" style="width: 100px; height: 100px;">
+        <img src="https://sukien-ttbc.vntechno.vn/Data/images/banner/banner.jpg" class="img-fluid" alt="Full-width image">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container mt-2">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><%= link_to "TRANG CHỦ", root_path, class: "btn me-2" %></li>
+        <li><%= link_to "ĐĂNG KÝ SỰ KIỆN", e_registrations_new_path, class: "btn me-2" %></li>
+        <li><%= link_to "HƯỚNG DẪN", home_tutorial_path, class: "btn me-2" %></li>
+        <li><%= link_to "HỎI ĐÁP", home_about_path, class: "btn me-2" %></li>
+
+      </ul>
+
+      <div class="text-end">
+        <% if user_signed_in? %>
+          <p>Chào mừng <%= current_user.id %> đã đăng nhập!</p>
+          <%= link_to edit_user_registration_path, class: 'btn btn-outline-dark me-2' do %>
+            <i class="fa-solid fa-user"></i>
+          <% end %>
+
+          
+        <% if current_user.admin? %> 
+          <%= link_to 'Manage', home_manager_path, class: 'btn btn-primary' %>
+        <% end %>
+
+
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "btn btn-outline-dark me-2" %>
+        <% else %>
+          <%= link_to 'Login', new_user_session_path , class: "btn btn-outline-dark me-2" %>
+          <%= link_to 'Register', new_user_registration_path, class: "btn btn-warning" %>
+        <% end %>
+
+        
+      </div>
+    </div>
+  </div>
+</header>

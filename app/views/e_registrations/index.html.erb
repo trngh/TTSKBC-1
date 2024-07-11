@@ -1,0 +1,43 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Danh sach lien he dang ky su kien</h1>
+
+<div class="btn-group" role="group" aria-label="Basic example">
+  <%= link_to 'Pending', e_registrations_path(status: 0), class: 'btn btn-primary' %>
+  <%= link_to 'Accepted', e_registrations_path(status: 1), class: 'btn btn-success' %>
+  <%= link_to 'Rejected', e_registrations_path(status: 2), class: 'btn btn-danger' %>
+</div>
+
+<br><br>
+
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th>Title</th>
+      <th>Detail</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Slot</th>
+      <th>User</th>
+      <th>Subject</th>
+      <th colspan="2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @e_registrations.each do |e_registration| %>
+      <tr>
+        <td><%= e_registration.title %></td>
+        <td><%= e_registration.detail %></td>
+        <td><%= e_registration.timestart.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= e_registration.timeend.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= e_registration.slot %></td>
+        <td><%= e_registration.user.email %></td>
+        <td><%= e_registration.subject.title %></td>
+        <td><%= link_to 'Edit', edit_e_registration_path(e_registration), class: 'btn btn-primary btn-sm' %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+

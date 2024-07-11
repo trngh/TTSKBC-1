@@ -1,0 +1,14 @@
+<div class="text">
+  <% if current_user.admin? %>
+    <%= link_to 'Danh sách người dùng', users_list_path, class: 'btn btn-primary' %>
+    <%= link_to 'Danh sách sự kiện', events_path, class: 'btn btn-primary' %>
+    <%= link_to 'Danh sách sự kiện đã đăng ký', e_registrations_path, class: 'btn btn-primary' %>
+    <%= link_to 'Danh sách chủ đề', subjects_path, class: 'btn btn-primary' %>
+    <%= link_to 'Danh sách phòng', rooms_path, class: 'btn btn-primary' %>
+  <% else %>
+    <div class="alert alert-danger" role="alert">
+      Bạn không có quyền truy cập vào trang này.
+    </div>
+    <%= link_to 'Quay về trang chủ', root_path, class: 'btn btn-danger' %>
+  <% end %>
+</div>
