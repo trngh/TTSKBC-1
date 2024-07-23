@@ -58,6 +58,7 @@ class ERegistrationsController < ApplicationController
           subject_id: @e_registration.subject_id,
           user_id: @e_registration.user_id,
           image: @e_registration.image,
+          content: @e_registration.content,
           rate: 0,
           status: 0 # sap dien ra
         )
@@ -104,6 +105,6 @@ class ERegistrationsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def e_registration_params
       # params.fetch(:e_registration, {})
-      params.require(:e_registration).permit(:title, :detail, :slot, :subject_id, :timestart, :timeend, :room_id, :image)
+      params.require(:e_registration).permit(:title, :detail, :slot, :subject_id, :timestart, :timeend, :room_id, :image, :content)
     end
 end

@@ -1,47 +1,61 @@
 <h1>ĐĂNG KÝ SỰ KIỆN</h1>
+<%= javascript_include_tag 'https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js' %>
+
 
 <%= form_with model: @e_registration, url: e_registrations_path, class: 'row g-3', local: true, multipart: true do |form| %>
   <div class="col-md-6">
     <%= form.label :email, class: 'form-label' %>
-    <%= form.email_field :email, value: current_user.email, class: 'form-control', id: 'inputEmail4', readonly: true %>
+    <%= form.email_field :email, value: current_user.email, class: 'form-control', readonly: true %>
   </div>
   <div class="col-md-6">
     <%= form.label :phone, 'Phone Number', class: 'form-label' %>
-    <%= form.text_field :phone, value: current_user.phone, class: 'form-control', id: 'inputPhone', readonly: true %>
+    <%= form.text_field :phone, value: current_user.phone, class: 'form-control', readonly: true %>
   </div>
   <div class="col-md-6">
     <%= form.label :name, 'Họ và tên', class: 'form-label' %>
-    <%= form.text_field :name, value: current_user.name, class: 'form-control', id: 'inputName', readonly: true %>
+    <%= form.text_field :name, value: current_user.name, class: 'form-control', readonly: true %>
   </div>
   <div class="col-12">
     <%= form.label :title, 'Tiêu đề', class: 'form-label' %>
-    <%= form.text_field :title, class: 'form-control', id: 'inputTitle' %>
+    <%= form.text_field :title, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= form.label :detail, "Chi tiết", for: "inputDetail" %>
+    <%= form.label :detail, "Chi tiết", class: 'form-label' %>
     <%= form.text_area :detail, class: "form-control", id: "inputDetail", rows: 3 %>
   </div>
   <div class="col-md-4">
     <%= form.label :slot, 'Số lượng', class: 'form-label' %>
-    <%= form.text_field :slot, class: 'form-control', id: 'inputSlot' %>
+    <%= form.text_field :slot, class: 'form-control' %>
   </div>
   <div class="col-md-4">
     <%= form.label :subject_id, 'Chọn Chủ Đề', class: 'form-label' %>
-    <%= form.select :subject_id, options_from_collection_for_select(@subjects, :id, :title), {}, { class: 'form-select', id: 'inputSubject' } %>
+    <%= form.select :subject_id, options_from_collection_for_select(@subjects, :id, :title), {}, class: 'form-select' %>
   </div>
   <div class="col-md-4">
     <%= form.label :timestart, 'Thời gian bắt đầu (YYYY/MM/DD HH:mm:ss)', class: 'form-label' %>
-    <%= form.text_field :timestart, class: 'form-control', id: 'inputTime'%>
+    <%= form.text_field :timestart, class: 'form-control' %>
   </div>
   <div class="col-md-4">
     <%= form.label :timeend, 'Thời gian kết thúc (YYYY/MM/DD HH:mm:ss)', class: 'form-label' %>
-    <%= form.text_field :timeend, class: 'form-control', id: 'inputTime'%>
+    <%= form.text_field :timeend, class: 'form-control' %>
   </div>
   <div class="col-12">
     <%= form.label :image, 'Hình ảnh', class: 'form-label' %>
-    <%= form.file_field :image, class: 'form-control', id: 'inputImage' %>
+    <%= form.file_field :image, class: 'form-control' %>
   </div>
+  <div class="form-group">
+    <%= form.label :content, 'Nội dung', class: 'form-label' %>
+    <%= form.text_area :content, class: 'ckeditor form-control', id: 'inputContent', rows: 3 %>
+  </div>
+
   <div class="col-12">
     <%= form.submit 'Đăng ký sự kiện', class: 'btn btn-primary' %>
   </div>
 <% end %>
+
+
+<script>
+  $(document).ready(function() {
+    $('.ckeditor').ckeditor();
+  });
+</script>

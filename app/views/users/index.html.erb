@@ -1,56 +1,64 @@
 <!-- app/views/admin/users/index.html.erb -->
-<h1>Danh sách người dùng</h1>
+<% if current_user.admin? %>
+  <h1>Danh sách người dùng</h1>
+  <% if can? :manage, User %>
+    <div class="mb-3">
+      <%= link_to 'All Users', users_list_path, class: 'btn btn-secondary btn-sm me-2' %>
+      <%= link_to 'Admin Users', users_list_path(role_id: 1), class: 'btn btn-primary btn-sm me-2' %>
+      <%= link_to 'Normal Users', users_list_path(role_id: 2), class: 'btn btn-info btn-sm me-2' %>
+      <!-- Add more role filters as needed -->
+    </div>
+  <% end %>
 
-<% if can? :manage, User %>
-  <div class="mb-3">
-    <%= link_to 'All Users', users_list_path, class: 'btn btn-secondary btn-sm me-2' %>
-    <%= link_to 'Admin Users', users_list_path(role_id: 1), class: 'btn btn-primary btn-sm me-2' %>
-    <%= link_to 'Normal Users', users_list_path(role_id: 2), class: 'btn btn-info btn-sm me-2' %>
-    <!-- Add more role filters as needed -->
-  </div>
-<% end %>
-
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Email</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Birthday</th>
-      <th>Gender</th>
-      <th>Company</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
+  <table class="table table-striped">
+    <thead>
       <tr>
-        <td><%= user.id %></td>
-        <td><%= user.email %></td>
-        <td><%= user.name %></td>
-        <td><%= user.phone %></td>
-        <td><%= user.birthday %></td>
-        <td><%= user.gender == '0' ? 'Female' : 'Male' %></td>
-        <td><%= user.company %></td>
-        <td><%= user.status == 0 ? 'Banned' : 'Active' %></td>
-        <td>
-          <% if user.status == 0 %>
-            <%= link_to 'Unban', unban_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-success btn-sm' %>
-          <% else %>
-            <%= link_to 'Ban', ban_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-          <% end %>
-        </td>
-        <td>
-          <% if user.role_id == 1 %>
-            <%= link_to 'To Guest', toguest_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-success btn-sm' %>
-          <% else %>
-            <%= link_to 'To Admin', toadmin_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
-          <% end %>
-        </td>
+        <th>ID</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Birthday</th>
+        <th>Gender</th>
+        <th>Company</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.id %></td>
+          <td><%= user.email %></td>
+          <td><%= user.name %></td>
+          <td><%= user.phone %></td>
+          <td><%= user.birthday %></td>
+          <td><%= user.gender == '0' ? 'Female' : 'Male' %></td>
+          <td><%= user.company %></td>
+          <td><%= user.status == 0 ? 'Banned' : 'Active' %></td>
+          <td>
+            <% if user.status == 0 %>
+              <%= link_to 'Unban', unban_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-success btn-sm' %>
+            <% else %>
+              <%= link_to 'Ban', ban_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </td>
+          <td>
+            <% if user.role_id == 1 %>
+              <%= link_to 'To Guest', toguest_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-success btn-sm' %>
+            <% else %>
+              <%= link_to 'To Admin', toadmin_user_path(user), method: :put, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
+
+
+<% else %>
+  <div class="alert alert-danger" role="alert">
+    Bạn không có quyền truy cập vào trang này.
+  </div>
+  <%= link_to 'Quay về trang chủ', root_path, class: 'btn btn-danger' %>
+<% end %>
 

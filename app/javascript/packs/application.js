@@ -3,10 +3,39 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
+// require("@rails/ujs").start()
+// require("turbolinks").start()
+// require("@rails/activestorage").start()
+// require("channels")
+// import "../stylesheets/application";
+
+// import 'ckeditor';
+
+// $(document).ready(function() {
+//   $('.ckeditor').ckeditor();
+// });
+
+
+// Import necessary Rails functionalities
 require("@rails/ujs").start()
 require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
+
+// Import stylesheets
+import "../scss/application.scss"
+import "../stylesheets/application";
+
+// Import jQuery and CKEditor
+import $ from 'jquery';
+import 'ckeditor';
+
+// Initialize CKEditor on elements with class 'ckeditor'
+$(document).on('turbolinks:load', function() {
+  $('.ckeditor').each(function() {
+    CKEDITOR.replace(this);
+  });
+});
 
 
 // Uncomment to copy all static images under ../images to the output folder and reference

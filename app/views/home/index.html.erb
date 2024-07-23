@@ -2,32 +2,59 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-10 col-md-8 col-lg-6">
       <h4 class="mb-4 pb-2 pb-md-0 mb-md-0 mt-5">Tìm kiếm sự kiện</h4>
-      <form class="d-flex align-items-center mt-3">
+      <%= form_with url: root_path, method: :get, local: true, class: "d-flex align-items-center mt-3" do %>
+        <!-- Dropdown Sắp xếp -->
         <div class="dropdown mr-3">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Chủ đề
+            <% if params[:sort].present? %>
+              <%= params[:sort] == 'newest' ? 'Newest' : 'Oldest' %>
+            <% else %>
+              Sắp xếp
+            <% end %>
           </button>
           <ul class="dropdown-menu">
-            <% @subjects.each do |subject| %>
-              <% link_path = root_path(subject_id: subject.id) %>
-              <%= link_to link_path, class: "dropdown-item" do %>
-                <%= subject.title %>
-              <% end %>
-            <% end %>
+            <li class="dropdown-header">Sort by</li>
+            <li>
+              <%= link_to 'Newest', root_path(sort: 'newest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
+            </li>
+            <li>
+              <%= link_to 'Oldest', root_path(sort: 'oldest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
+            </li>
           </ul>
-
         </div>
 
+        <!-- Tìm kiếm -->
         <div class="input-group">
           <%= text_field_tag :find_event, params[:find_event], class: 'form-control ms-2', placeholder: 'Tìm kiếm sự kiện' %>
+          <%= hidden_field_tag :subject_id, params[:subject_id] %>
+          <%= hidden_field_tag :sort, params[:sort] %>
+
+          <!-- Dropdown Chủ đề -->
+          <div class="dropdown ms-3 mr-3">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if params[:subject_id].present? %>
+                <%= Subject.find(params[:subject_id]).title %>
+              <% else %>
+                Chủ đề
+              <% end %>
+            </button>
+            <ul class="dropdown-menu">
+              <% @subjects.each do |subject| %>
+                <li>
+                  <%= link_to subject.title, root_path(subject_id: subject.id, find_event: params[:find_event], sort: params[:sort]), class: "dropdown-item" %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+
           <%= submit_tag 'Tìm kiếm', class: 'btn btn-success ms-2', name: 'button' %>
         </div>
-        
-      </form>
+      <% end %>
     </div>
   </div>
 </div>
 
+<!-- Hiển thị sự kiện -->
 <div class="container">
   <div class="row">
     <% @events.each_slice(3) do |events_in_row| %>
@@ -35,13 +62,12 @@
         <% events_in_row.each do |event| %>
           <div class="col-md-4 mb-4">
             <div class="card card-hover">
-
               <% if event.image.present? %>
-                <div class="card card-hover">
+                <div class="card">
                   <%= image_tag event.image.url, class: 'card-img-top card-img-top-center' %>
                 </div>
               <% else %>
-                <div class="card card-hover">
+                <div class="card">
                   <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", class: "card-img-top card-img-top-center") %>
                 </div>
               <% end %>
@@ -49,7 +75,6 @@
                 <div class="d-flex align-items-center mb-2">
                   <div><h4><%= event.timestart.day %> tháng <%= event.timestart.month %> năm <%= event.timestart.year %> </h4></div>
                   <div class="flex-1"></div>
-
                   <div class="box-status" style="text-align: right">
                     <% case event.status %>
                     <% when 0 %>
@@ -61,29 +86,23 @@
                     <% end %>
                   </div>
                 </div>
-
                 <div style="text-align: left">
                   <h4 class="rows-2" title="<%= event.title %>">
                     <%= event.title %>
                   </h4>
-                  
                 </div>
                 <div style="text-align: left">
                   <h4 class="rows-2" title="<%= event.subject %>">
                     Chủ đề:
                     <%= event.subject.title %>
                   </h4>
-                  
                 </div>
-
-
                 <div class="d-flex flex-row align-items-start justify-content-between flex-wrap">
                   <div style="text-align: left">
                     <h7><i class="fas fa-calendar-alt"></i> <%= event.timestart.strftime('%d/%m/%Y') %></h7>
                     <h7 class="time"><%= event.timestart.strftime('%H:%M:%S') %> - <%= event.timeend.strftime('%H:%M:%S') %></h7> <br>
                     <h7><i class="fas fa-map-marker-alt"></i> Địa điểm: <%= event.room.name %></h7>
                   </div>
-
                   <ul class="list-unstyled d-flex align-items-center mb-0">
                     <% event.rate.times do %>
                       <li><i class="fas fa-star text-warning"></i></li>

@@ -6,13 +6,13 @@ class EventsController < ApplicationController
   # GET /events or /events.json
   def index
     @events = Event.all
-
   end
 
   # GET /events/1 or /events/1.json
   def show
     # @event = Event.find(params[:id])
     # @user = Event.user
+    @related_events = Event.where(subject_id: @event.subject_id).where.not(id: @event.id)
   end
 
   # GET /events/new
@@ -72,6 +72,6 @@ class EventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def event_params
       params.fetch(:event, {})
-      params.require(:event).permit(:title, :detail, :slot, :subject_id, :image)
+      params.require(:event).permit(:title, :detail, :slot, :subject_id, :image, :content)
     end
 end

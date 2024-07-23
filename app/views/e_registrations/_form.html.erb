@@ -1,5 +1,6 @@
 <!-- app/views/e_registrations/_form.html.erb -->
 <%= form_with(model: e_registration, local: true, multipart: true) do |form| %>
+<%= javascript_include_tag 'https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js' %>
   <% if e_registration.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(e_registration.errors.count, "error") %> prohibited this e_registration from being saved:</h2>
@@ -36,6 +37,12 @@
     <%= form.label :slot %>
     <%= form.number_field :slot, class: 'form-control' %>
   </div>
+  <div class="field">
+    <%= form.label :content %>
+    <%= form.cktext_area :content, class: 'form-control' %>
+  </div>
+
+
 
   <div class="field">
     <%= form.label :room_id, 'Room' %>

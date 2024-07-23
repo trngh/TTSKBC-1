@@ -1,56 +1,68 @@
-<p id="notice"><%= notice %></p>
+<div class="text">
+  <% if current_user.admin? %>
+    <p id="notice"><%= notice %></p>
+    <h1>Danh sach su kien</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Time Start</th>
+          <th>Time End</th>
+          <th>Detail</th>
+          <th>Slot</th>
+          <th>Rate</th>
+          <th>Status</th>
+          <th>Subject</th>
+          <th>User</th>
+          <th>Room</th>
+          <th colspan="3"></th>
+        </tr>
+      </thead>
 
-<h1>Danh sach su kien</h1>
+      <tbody>
+        <% @events.each.reverse_each do |event| %>
+          <tr>
+            <td><%= event.title %></td>
+            <td><%= event.timestart.strftime('%Y-%m-%d %H:%M') if event.timestart %></td>
+            <td><%= event.timeend.strftime('%Y-%m-%d %H:%M') if event.timeend %></td>
+            <td><%= event.detail %></td>
+            <td><%= event.slot %></td>
+            <td><%= event.rate %></td>
+            <td>
+              <% case event.status %>
+                <% when 0 %>
+                  Sắp diễn ra
+                <% when 1 %>
+                  Đang diễn ra
+                <% when 2 %>
+                  Đã kết thúc
+                <% else %>
+                  <%= event.status %>
+              <% end %>
+            </td>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>Time Start</th>
-      <th>Time End</th>
-      <th>Detail</th>
-      <th>Slot</th>
-      <th>Rate</th>
-      <th>Status</th>
-      <th>Subject</th>
-      <th>User</th>
-      <th>Room</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+            <td><%= event.subject.title if event.subject %></td>
+            <td><%= event.user.email if event.user %></td>
+            <td><%= event.room.name if event.room %></td>
+            <td><%= link_to 'Show', event, class: 'btn btn-primary btn-sm' %></td>
+            <td><%= link_to 'Edit', edit_event_path(event), class: 'btn btn-warning btn-sm' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-  <tbody>
-    <% @events.each.reverse_each do |event| %>
-      <tr>
-        <td><%= event.title %></td>
-        <td><%= event.timestart.strftime('%Y-%m-%d %H:%M') if event.timestart %></td>
-        <td><%= event.timeend.strftime('%Y-%m-%d %H:%M') if event.timeend %></td>
-        <td><%= event.detail %></td>
-        <td><%= event.slot %></td>
-        <td><%= event.rate %></td>
-        <td>
-          <% case event.status %>
-            <% when 0 %>
-              Sắp diễn ra
-            <% when 1 %>
-              Đang diễn ra
-            <% when 2 %>
-              Đã kết thúc
-            <% else %>
-              <%= event.status %>
-          <% end %>
-        </td>
+    <br>
 
-        <td><%= event.subject.title if event.subject %></td>
-        <td><%= event.user.email if event.user %></td>
-        <td><%= event.room.name if event.room %></td>
-        <td><%= link_to 'Show', event, class: 'btn btn-primary btn-sm' %></td>
-        <td><%= link_to 'Edit', edit_event_path(event), class: 'btn btn-warning btn-sm' %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+    <%# <%= link_to 'New Event', new_event_path, class: 'btn btn-success' %> 
 
-<br>
+  <% else %>
+    <div class="alert alert-danger" role="alert">
+      Bạn không có quyền truy cập vào trang này.
+    </div>
+    <%= link_to 'Quay về trang chủ', root_path, class: 'btn btn-danger' %>
+  <% end %>
+</div>
 
-<%# <%= link_to 'New Event', new_event_path, class: 'btn btn-success' %> 
+
+
+

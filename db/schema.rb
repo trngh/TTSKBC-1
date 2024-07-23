@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_07_11_031628) do
+ActiveRecord::Schema.define(version: 2024_07_16_093529) do
+
+  create_table "ckeditor_assets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "data_file_name", null: false
+    t.string "data_content_type"
+    t.integer "data_file_size"
+    t.integer "assetable_id"
+    t.string "assetable_type", limit: 30
+    t.string "type", limit: 30
+    t.integer "width"
+    t.integer "height"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable"
+    t.index ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type"
+  end
 
   create_table "e_joins", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
@@ -34,6 +49,7 @@ ActiveRecord::Schema.define(version: 2024_07_11_031628) do
     t.datetime "timeend"
     t.integer "room_id"
     t.string "image"
+    t.text "content"
     t.index ["subject_id"], name: "index_e_registrations_on_subject_id"
     t.index ["user_id"], name: "index_e_registrations_on_user_id"
   end
@@ -52,6 +68,7 @@ ActiveRecord::Schema.define(version: 2024_07_11_031628) do
     t.bigint "room_id", null: false
     t.datetime "timeend"
     t.string "image"
+    t.text "content"
     t.index ["room_id"], name: "index_events_on_room_id"
     t.index ["subject_id"], name: "index_events_on_subject_id"
     t.index ["user_id"], name: "index_events_on_user_id"

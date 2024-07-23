@@ -1,6 +1,6 @@
 <div class="detail-event m-5">
   <div class="header">
-    <div class="content row ">
+    <div class="content row">
       <div class="image col-md-5 text-center">
         <% if @event.image.present? %>
           <div class="card card-hover">
@@ -41,23 +41,22 @@
         </div>
 
         <div class="row">
-            <div class="list-box-status col-md-4">
-                <label>Đánh giá: </label>
-                <ul class="list-unstyled d-flex align-items-center mb-0">
-                    <% @event.rate.times do %>
-                    <li><i class="fas fa-star text-warning"></i></li>
-                    <% end %>
-                    <% (5 - @event.rate).times do %>
-                    <li><i class="far fa-star text-secondary"></i></li>
-                    <% end %>
-                </ul>
-            </div>
-            <div class="col-md-8">
-                <label>Chi tiết</label>
-                <h6><i class="ti ti-map-pin"></i> <%= @event.detail %> </h6>
-            </div>
+          <div class="list-box-status col-md-4">
+            <label>Đánh giá: </label>
+            <ul class="list-unstyled d-flex align-items-center mb-0">
+              <% @event.rate.times do %>
+                <li><i class="fas fa-star text-warning"></i></li>
+              <% end %>
+              <% (5 - @event.rate).times do %>
+                <li><i class="far fa-star text-secondary"></i></li>
+              <% end %>
+            </ul>
+          </div>
+          <div class="col-md-8">
+            <label>Chi tiết</label>
+            <h6><i class="ti ti-map-pin"></i> <%= @event.detail %> </h6>
+          </div>
         </div>
-        
 
         <div class="list-box-status mt-2">
           <% if @event.status == 0 %>
@@ -70,33 +69,57 @@
             <%= link_to 'Đăng ký tham gia', '#', class: "btn btn-outline-dark me-2 disabled", aria: { disabled: true } %>
           <% end %>
         </div>
-
-
       </div>
     </div>
     <div class="shadow"></div>
   </div>
+
+
   <div class="body row border p-3">
     <div class="col-md-12">
       <div class="detail row ms-5">
         <div class="col-md-4">
-          <h4>Chủ trì: <%= @event.user.name %> </h4>
+          <h4>Host: <%= @event.user.name %> </h4>
         </div>
         <div class="col-md-4">
-          <h4> Số ghế: <%= @event.slot %> </h4>
+          <h4> Slot: <%= @event.slot %> </h4>
         </div>
         <div class="col-md-4">
           <%# <h4> Còn trống: <%= @event.slot - @event.amount_join %> </h4> 
         </div>
       </div>
-    </div>
+      <div class="detail row ms-5">
+        <h4> Content: </h4>
+        <%# <%= raw @event.content %>
+        <%= sanitize(@event.content, tags: %w[p br a], attributes: %w[href]) %>
+      </div>
+
+  <p id="notice"><%= notice %></p>
+
+  <% if can?(:update, @event) %>
+    <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-outline-dark me-2" %>
+  <% end %>
+
+  <h2 class="mt-5">Su kien cung chu de</h2>
+  <div class="related-events row">
+    <% if @related_events.any? %>
+      <% @related_events.each do |related_event| %>
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to related_event.title, event_path(related_event) %></h5>
+              <p class="card-text">
+                <strong>Date:</strong> <%= related_event.timestart.strftime("%d/%m/%Y %H:%M") %><br>
+                <strong>Room:</strong> <%= related_event.room.name %><br>
+                <strong>Details:</strong> <%= truncate(related_event.detail, length: 100) %>
+              </p>
+              <%= link_to 'View Event', event_path(related_event), class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <p>No related events found.</p>
+    <% end %>
   </div>
 </div>
-
-
-<p id="notice"><%= notice %></p>
-
-<% if can?(:update, @event) %>
-  <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-outline-dark me-2" %>
-<% end %>
-<%# <%= link_to 'Back', events_path %>
