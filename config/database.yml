@@ -51,4 +51,4 @@ production:
   <<: *default
   database: TTSKBC
   username: TTSKBC
-  password: <%= ENV['TTSKBC_DATABASE_PASSWORD'] %>
+  password: <%= ENV['nghia'] %>

@@ -9,7 +9,9 @@ class Ability
     if user.status != 0
       if user.role_id == 1
         can :manage, :all
+        can :access, :'home/manager'
       else
+        cannot :access, 'home/manager'
         can :read, Event
         can :create, ERegistration
         can :create, EJoin

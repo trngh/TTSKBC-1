@@ -1,0 +1,28 @@
+version: '3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: nghia
+      MYSQL_DATABASE: TTSKBC
+      MYSQL_USER: TTSKBC
+      MYSQL_PASSWORD: <%= ENV['nghia'] %>
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  web:
+    build: .
+    command: bundle exec rails s -b '0.0.0.0'
+    volumes:
+      - ".:/myapp"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "mysql2://root:nghia@db:3306/TTSKBC"
+
+volumes:
+  db_data:

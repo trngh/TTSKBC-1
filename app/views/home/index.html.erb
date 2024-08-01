@@ -2,36 +2,45 @@
   <div class="row justify-content-center align-items-center">
     <div class="col-10 col-md-8 col-lg-6">
       <h4 class="mb-4 pb-2 pb-md-0 mb-md-0 mt-5">Tìm kiếm sự kiện</h4>
-      <%= form_with url: root_path, method: :get, local: true, class: "d-flex align-items-center mt-3" do %>
+      <%= form_with url: root_path, method: :get, local: true, class: "row gy-2 gy-md-0 align-items-center mt-3" do %>
+        <!-- Tìm kiếm -->
+        <div class="col-12 col-md flex-grow-1">
+          <div class="input-group">
+            <%= text_field_tag :find_event, params[:find_event], class: 'form-control', placeholder: 'Tìm kiếm sự kiện' %>
+            <%= hidden_field_tag :subject_id, params[:subject_id] %>
+            <%= hidden_field_tag :sort, params[:sort] %>
+          </div>
+        </div>
+        
+        
         <!-- Dropdown Sắp xếp -->
-        <div class="dropdown mr-3">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <% if params[:sort].present? %>
-              <%= params[:sort] == 'newest' ? 'Newest' : 'Oldest' %>
-            <% else %>
-              Sắp xếp
-            <% end %>
-          </button>
-          <ul class="dropdown-menu">
-            <li class="dropdown-header">Sort by</li>
-            <li>
-              <%= link_to 'Newest', root_path(sort: 'newest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
-            </li>
-            <li>
-              <%= link_to 'Oldest', root_path(sort: 'oldest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
-            </li>
-          </ul>
+        <div class="col-12 col-md-auto">
+          <div class="dropdown me-1 mb-2 mb-md-0">
+            <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <% if params[:sort].present? %>
+                <%= params[:sort] == 'newest' ? 'Newest' : 'Oldest' %>
+              <% else %>
+                Sắp xếp
+              <% end %>
+            </button>
+            <ul class="dropdown-menu">
+              <li class="dropdown-header">Sort by</li>
+              <li>
+                <%= link_to 'Newest', root_path(sort: 'newest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
+              </li>
+              <li>
+                <%= link_to 'Oldest', root_path(sort: 'oldest', subject_id: params[:subject_id], find_event: params[:find_event]), class: "dropdown-item" %>
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <!-- Tìm kiếm -->
-        <div class="input-group">
-          <%= text_field_tag :find_event, params[:find_event], class: 'form-control ms-2', placeholder: 'Tìm kiếm sự kiện' %>
-          <%= hidden_field_tag :subject_id, params[:subject_id] %>
-          <%= hidden_field_tag :sort, params[:sort] %>
+        
 
-          <!-- Dropdown Chủ đề -->
-          <div class="dropdown ms-3 mr-3">
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <!-- Dropdown Chủ đề -->
+        <div class="col-12 col-md-auto ms-0 ms-md-3">
+          <div class="dropdown me-1 mb-1 mb-md-0">
+            <button class="btn btn-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               <% if params[:subject_id].present? %>
                 <%= Subject.find(params[:subject_id]).title %>
               <% else %>
@@ -46,13 +55,18 @@
               <% end %>
             </ul>
           </div>
+        </div>
 
-          <%= submit_tag 'Tìm kiếm', class: 'btn btn-success ms-2', name: 'button' %>
+        <!-- Submit button -->
+        <div class="col-12 col-md-auto ms-0 ms-md-3">
+          <%= submit_tag 'Tìm kiếm', class: 'btn btn-success w-100', name: 'button' %>
         </div>
       <% end %>
+
     </div>
   </div>
 </div>
+
 
 <!-- Hiển thị sự kiện -->
 <div class="container">

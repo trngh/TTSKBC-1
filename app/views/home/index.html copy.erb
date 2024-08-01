@@ -1,95 +1,48 @@
-<div class="container-fluid mb-3">
-  <div class="row justify-content-center align-items-center">
-    <div class="col-10 col-md-8 col-lg-6">
-      <h4 class="mb-4 pb-2 pb-md-0 mb-md-0 mt-5">Tìm kiếm sự kiện</h4>
-      <form class="d-flex align-items-center mt-3">
-        <div class="dropdown mr-3">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Chủ đề
-          </button>
-          <ul class="dropdown-menu">
-            <% @subjects.each do |subject| %>
-              <% link_path = select_by_subject_path(subject.id) %>
-              <%= link_to link_path, class: "dropdown-item" do %>
-                <%= subject.title %>
-              <% end %>
-            <% end %>
-          </ul>
-        </div>
+<%# header %>
 
-        <div class="input-group">
-          <%= text_field_tag :find_event, params[:find_event], class: 'form-control ms-2', placeholder: 'Tìm kiếm sự kiện' %>
-          <%= submit_tag 'Tìm kiếm', class: 'btn btn-success ms-2', name: 'button' %>
-        </div>
-        
-      </form>
+<header class="p-3 text-bg-light">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <div class="col-auto">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s" 
+          class="img-fluid" alt="Full-width image" style="width: 100px; height: 100px;">
+        <img src="https://sukien-ttbc.vntechno.vn/Data/images/banner/banner.jpg" class="img-fluid" alt="Full-width image">
+      </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <% @events.each_slice(3) do |events_in_row| %>
-      <div class="row mb-4">
-        <% events_in_row.each do |event| %>
-          <div class="col-md-4 mb-4">
-            <div class="card card-hover">
-              <%= link_to event_path(event) do %>
-                <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", class: "card-img-top card-img-top-center") %>
-              <% end %>
-              <div class="card-body" onclick="window.location='<%= event_path(event) %>'">
-                <div class="d-flex align-items-center mb-2">
-                  <div><h4><%= event.datetime_start.day %> tháng <%= event.datetime_start.month %> năm <%= event.datetime_start.year %> </h4></div>
-                  <div class="flex-1"></div>
-
-                  <div class="box-status" style="text-align: right">
-                    <% case event.status %>
-                    <% when 0 %>
-                      <label class="badge bg-warning">Sắp diễn ra</label>
-                    <% when 1 %>
-                      <label class="badge bg-success">Đang diễn ra</label>
-                    <% when 2 %>
-                      <label class="badge bg-secondary">Đã kết thúc</label>
-                    <% end %>
-                  </div>
-                </div>
-
-                <div style="text-align: left">
-                  <h4 class="rows-2" title="<%= event.title %>">
-                    <%= event.title %>
-                  </h4>
-                  
-                </div>
-                <div style="text-align: left">
-                  <h4 class="rows-2" title="<%= event.subject %>">
-                    Chủ đề:
-                    <%= event.subject.title %>
-                  </h4>
-                  
-                </div>
 
 
-                <div class="d-flex flex-row align-items-start justify-content-between flex-wrap">
-                  <div style="text-align: left">
-                    <h7><i class="fas fa-calendar-alt"></i> <%= event.datetime_start.strftime('%d/%m/%Y') %></h7>
-                    <h7 class="time"><%= event.datetime_start.strftime('%H:%M:%S') %></h7> <br>
-                    <h7><i class="fas fa-map-marker-alt"></i> Địa điểm: <%= event.room %></h7>
-                  </div>
+  <div class="container mt-2">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><%= link_to "TRANG CHỦ", root_path, class: "btn me-2" %></li>
+        <li><%= link_to "ĐĂNG KÝ SỰ KIỆN", e_registrations_new_path, class: "btn me-2" %></li>
+        <li><%= link_to "HƯỚNG DẪN", home_tutorial_path, class: "btn me-2" %></li>
+        <li><%= link_to "HỎI ĐÁP", home_about_path, class: "btn me-2" %></li>
 
-                  <ul class="list-unstyled d-flex align-items-center mb-0">
-                    <% event.rate.times do %>
-                      <li><i class="fas fa-star text-warning"></i></li>
-                    <% end %>
-                    <% (5 - event.rate).times do %>
-                      <li><i class="far fa-star text-secondary"></i></li>
-                    <% end %>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+      </ul>
+
+      
+
+
+      <div class="text-end">
+        <% if user_signed_in? %>
+          <p>Chào mừng <%= current_user.id %> đã đăng nhập!</p>
+          <%= link_to edit_user_registration_path, class: 'btn btn-outline-dark me-2' do %>
+            <i class="fa-solid fa-user"></i>
+          <% end %>
+
+          <% if current_user.admin? %>
+            <%= link_to 'Manage', home_manager_path, class: 'btn btn-primary' %>
+          <% end %>
+
+          <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: "btn btn-outline-dark me-2" %>
+        <% else %>
+          <%= link_to 'Login', new_user_session_path, class: "btn btn-outline-dark me-2" %>
+          <%= link_to 'Register', new_user_registration_path, class: "btn btn-warning" %>
         <% end %>
       </div>
-    <% end %>
+
+    </div>
   </div>
-</div>
+</header>

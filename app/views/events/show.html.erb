@@ -1,21 +1,21 @@
 <div class="detail-event m-5">
   <div class="header">
     <div class="content row">
-      <div class="image col-md-5 text-center">
+      <div class="image col-md-5 text-center mb-3 mb-md-0">
         <% if @event.image.present? %>
           <div class="card card-hover">
-            <%= image_tag @event.image.url, style: "object-fit: contain", class: "mx-auto d-block"%>
+            <%= image_tag @event.image.url, style: "object-fit: contain", class: "mx-auto d-block img-fluid"%>
           </div>
         <% else %>
           <div class="card card-hover">
-            <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", style: "object-fit: contain", class: "mx-auto d-block") %>
+            <%= image_tag("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtIt05CtUzrhcSZc-nnMcNEdOt1iowtU9Yrw&s", style: "object-fit: contain", class: "mx-auto d-block img-fluid") %>
           </div>
         <% end %>
       </div>
 
       <div class="title col-md-7">
         <div class="list-box-status">
-          <div class="box-status" style="text-align: left">
+          <div class="box-status text-start">
             <% case @event.status %>
             <% when 0 %>
               <label class="badge bg-warning">Sắp diễn ra</label>
@@ -26,7 +26,7 @@
             <% end %>
           </div>
         </div>
-        <h1>
+        <h1 class="mt-3">
           <%= @event.title %>
         </h1>
         <div class="row">
@@ -40,7 +40,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row mt-3">
           <div class="list-box-status col-md-4">
             <label>Đánh giá: </label>
             <ul class="list-unstyled d-flex align-items-center mb-0">
@@ -58,7 +58,7 @@
           </div>
         </div>
 
-        <div class="list-box-status mt-2">
+        <div class="list-box-status mt-3">
           <% if @event.status == 0 %>
             <% unless EJoin.exists?(user_id: current_user.id, event_id: @event.id) %>
               <%= link_to 'Đăng ký tham gia', new_e_join_path(event_id: @event.id), class: "btn btn-outline-dark me-2" %>
@@ -74,8 +74,7 @@
     <div class="shadow"></div>
   </div>
 
-
-  <div class="body row border p-3">
+  <div class="body row border p-3 mt-4">
     <div class="col-md-12">
       <div class="detail row ms-5">
         <div class="col-md-4">
@@ -84,20 +83,19 @@
         <div class="col-md-4">
           <h4> Slot: <%= @event.slot %> </h4>
         </div>
-        <div class="col-md-4">
-          <%# <h4> Còn trống: <%= @event.slot - @event.amount_join %> </h4> 
-        </div>
+        
       </div>
-      <div class="detail row ms-5">
-        <h4> Content: </h4>
-        <%# <%= raw @event.content %>
-        <%= sanitize(@event.content, tags: %w[p br a], attributes: %w[href]) %>
+      <div class="detail row ms-5 mt-3">
+        <h4>Content: </h4>
+        <%= sanitize(@event.content, tags: %w[p br a img], attributes: %w[href src alt width height]) %>
       </div>
+    </div>
+  </div>
 
   <p id="notice"><%= notice %></p>
 
   <% if can?(:update, @event) %>
-    <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-outline-dark me-2" %>
+    <%= link_to 'Edit', edit_event_path(@event), class: "btn btn-outline-dark me-2 mt-3" %>
   <% end %>
 
   <h2 class="mt-5">Su kien cung chu de</h2>

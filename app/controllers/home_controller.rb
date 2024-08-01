@@ -1,4 +1,5 @@
 class HomeController < ApplicationController
+  before_action :authenticate_user!
   # before_action :check_admin, only: [:manager]
   # def index
   #   @events = Event.all
@@ -16,6 +17,14 @@ class HomeController < ApplicationController
   #     event.update_status_if_expired
   #   end
   # end
+
+  def manager
+    authorize! :access, :home_manager
+    # respond_to do |format|
+    #   format.html { redirect_to root_path, notice: 'Bạn không có quyền truy cập vào trang này.' }
+    #   format.json { head :no_content }
+    # end
+  end
 
   def index
     @subjects = Subject.all
